@@ -1,0 +1,31 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "ec2aa407-e6be-402d-9c6e-1a2a85b2a7ef": {
+      "ProjectGuid": "ec2aa407-e6be-402d-9c6e-1a2a85b2a7ef",
+      "DisplayName": "MockUI",
+      "ColorIndex": 0
+    },
+    "68a4c5dd-f3d9-49ad-80c2-259e6c546ef0": {
+      "ProjectGuid": "68a4c5dd-f3d9-49ad-80c2-259e6c546ef0",
+      "DisplayName": "DatabaseInfrastructure",
+      "ColorIndex": 1
+    },
+    "dfd6c1ae-88ad-4621-a088-71d2c5c8867f": {
+      "ProjectGuid": "dfd6c1ae-88ad-4621-a088-71d2c5c8867f",
+      "DisplayName": "BusinessLogicLayer",
+      "ColorIndex": 2
+    },
+    "58672129-c51a-4594-9881-a54906e5d5b5": {
+      "ProjectGuid": "58672129-c51a-4594-9881-a54906e5d5b5",
+      "DisplayName": "DatabaseAbstractions",
+      "ColorIndex": 3
+    },
+    "b6c9fe35-1447-4a7e-9311-3852737634f8": {
+      "ProjectGuid": "b6c9fe35-1447-4a7e-9311-3852737634f8",
+      "DisplayName": "MockAPI",
+      "ColorIndex": 4
+    }
+  },
+  "NextColorIndex": 5
+}
