@@ -138,6 +138,14 @@ namespace DatabaseInfrastructure
                  .Required(x => x.CurrencyToConvertToId)
                  .Required(x => x.ConversionValue)
                  .HasKey(x => x.Id);
+
+                cc.HasOne(x => x.SourceCurrency)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+                cc.HasOne(x => x.CurrencyToConvertTo)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
             });
 
             mb.Entity<Account>(a =>
@@ -167,7 +175,7 @@ namespace DatabaseInfrastructure
                 .HasForeignKey(x => x.UserId);
 
                 a.HasOne(x => x.Currency)
-                .WithMany(x => x.Accounts)
+                .WithMany()
                 .HasForeignKey(x => x.CurrencyId);
 
                 a.HasOne(x => x.CreditCard)
@@ -250,8 +258,8 @@ namespace DatabaseInfrastructure
                 .HasForeignKey(x => x.AccountId);
 
                 t.HasOne(x => x.Currency)
-                .WithMany(x => x.Transactions)
-                .HasForeignKey(x => x.CurrencyId);
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict); 
             });
 
         }
@@ -291,9 +299,6 @@ namespace DatabaseInfrastructure
     public class Currency : PrimaryKey, IPrimaryKey
     {
         public string Name { get; set; }
-
-        public List<Account> Accounts { get; } = new();
-        public List<Transaction> Transactions { get; } = new();
     }
 
     public class CurrencyConversion : PrimaryKey, IPrimaryKey
