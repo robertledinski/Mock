@@ -2,3 +2,14 @@
 /DatabaseAbstructions/obj/
 /DatabaseInfrastructure/obj/
 /MockAPI/obj/
+/.vs/Mock/DesignTimeBuild/.dtbcache.v2
+/.vs/Mock/
+/bcpk/DatabaseAbstructions/obj/
+/BusinessLogicLayer/bin/
+/DatabaseAbstractions/bin/
+/DatabaseAbstractions/obj/
+/DatabaseInfrastructure/bin/
+/MockAPI/bin/
+/node_modules/
+/WebApi/bin/
+/WebApi/obj/

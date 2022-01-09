@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DatabaseAbstructions
+namespace BusinessLogicLayer
 {
-    public interface IDbContext
+    public interface IBankService
     {
-
+        string Test();
     }
 }

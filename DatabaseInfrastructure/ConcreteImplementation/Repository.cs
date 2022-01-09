@@ -1,17 +1,15 @@
-﻿using DatabaseAbstructions;
+﻿using DatabaseAbstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DatabaseInfrastructure.Abstractions
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        protected readonly ApplicationContext _context;
-        public Repository(ApplicationContext context)
+        protected readonly MockContext _context;
+        public Repository(MockContext context)
         {
             _context = context;
         }
@@ -37,7 +35,6 @@ namespace DatabaseInfrastructure.Abstractions
         public void RemoveRange(IEnumerable<T> entities)
             => _context.Set<T>().RemoveRange(entities);
 
-        public IQueryable<T> All()
-            => _context.Set<T>().AsQueryable();
+        public IQueryable<T> All => _context.Set<T>().AsQueryable();
     }
 }

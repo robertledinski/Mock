@@ -8,5 +8,6 @@ namespace DatabaseAbstractions
 {
     public interface IUnitOfWork : IDisposable
     {
+        int Commit();
     }
 }

@@ -1,12 +1,11 @@
-﻿using BusinessLogicLayer;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Mock.Controllers
+namespace WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -18,15 +17,10 @@ namespace Mock.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-        private IBankService _bankService;
 
-        public WeatherForecastController(
-            ILogger<WeatherForecastController> logger,
-            IBankService bankService
-            )
+        public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
-            _bankService = bankService;
         }
 
         [HttpGet]
@@ -40,15 +34,6 @@ namespace Mock.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
-        }
-
-        [HttpGet]
-        [Route("Test")]
-        public IActionResult Test() // async Task
-        {
-           var test = _bankService.Test();
-
-            return CreatedAtAction(nameof(Test), test);
         }
     }
 }

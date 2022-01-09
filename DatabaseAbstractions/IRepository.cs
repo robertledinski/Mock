@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace DatabaseAbstructions
+namespace DatabaseAbstractions
 {
     public interface IRepository<T> where T : class
     {
@@ -14,6 +14,7 @@ namespace DatabaseAbstructions
         void AddRange(IEnumerable<T> entities);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entities);
-        IQueryable<T> All();
+
+        IQueryable<T> All { get; }
     }
 }

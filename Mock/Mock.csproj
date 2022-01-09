@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove=".gitignore" />
     <None Remove="ClientApp\src\components\AccountDetails.tsx" />
   </ItemGroup>
 
