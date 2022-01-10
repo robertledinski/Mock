@@ -59,12 +59,9 @@ namespace Mock
                 app.UseHsts();
             }
 
+            // Create and seed db
             using (var scope = app.ApplicationServices.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-
-                SeedData.Initialize(services);
-            }
+                SeedData.Initialize(scope.ServiceProvider);
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

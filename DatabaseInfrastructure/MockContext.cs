@@ -155,12 +155,12 @@ namespace DatabaseInfrastructure
                  .Required(x => x.AvailableMinus)
                  .Required(x => x.BankId)
                  .Required(x => x.AccountNumber)
+                 .Required(x => x.AccountId)
                  .Required(x => x.CurrentBalance)
                  .Required(x => x.DailyWithdrawalLimit)
                  .Required(x => x.Name)
                  .Required(x => x.Type)
                  .Required(x => x.SubType)
-                 .Required(x => x.SecundaryIdentification)
                  .Required(x => x.Locked)
                  .Required(x => x.UserId)
                  .Required(x => x.CurrencyId)
@@ -245,7 +245,7 @@ namespace DatabaseInfrastructure
                 t.Required(x => x.Status)
                 .Required(x => x.Amount)
                 .Required(x => x.CardType)
-                .Required(x => x.CurrencyId)
+               // .Required(x => x.CurrencyId)
                 .Required(x => x.Date).HasKey(x => x.Id);
 
 
@@ -257,9 +257,9 @@ namespace DatabaseInfrastructure
                 .WithMany(x => x.Transactions)
                 .HasForeignKey(x => x.AccountId);
 
-                t.HasOne(x => x.Currency)
+             /*   t.HasOne(x => x.Currency)
                 .WithMany()
-                .OnDelete(DeleteBehavior.Restrict); 
+                .OnDelete(DeleteBehavior.Restrict); */
             });
 
         }
@@ -271,6 +271,12 @@ namespace DatabaseInfrastructure
 
     public class User : PrimaryKey, IPrimaryKey
     {
+        public User()
+        {
+            Locked = false;
+            FailedLoginRetryCount = 0;
+        }
+
         public string FistName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -292,7 +298,7 @@ namespace DatabaseInfrastructure
     {
         public string Name { get; set; }
 
-        public virtual List<Account> Accounts { get; } = new();
+        public virtual List<Account> Accounts { get; set; } = new();
     }
 
 
@@ -336,7 +342,8 @@ namespace DatabaseInfrastructure
         public AccountSubType SubType { get; set; }
         public string SortCode { get; set; }
         public string AccountNumber { get; set; }
-        public string SecundaryIdentification { get; set; }
+        public string AccountId { get; set; }
+        public string SecondaryIdentification { get; set; }
         public int Locked { get; set; }
 
 
@@ -381,13 +388,23 @@ namespace DatabaseInfrastructure
     /// </summary>
     public enum AccountType : short
     {
+        Unknown = 0,
         Personal = 1,
         Business = 2
     }
 
     public enum AccountSubType : short
     {
+        Unknown = 0,
         CurrentAccount = 1
+    }
+
+    public enum CurrencyType : short
+    { 
+        Unknown = 0,
+        GBP = 1,
+        EUR = 2
+        // add more if needed
     }
 
     public class CreditCard : PrimaryKey, IPrimaryKey
@@ -455,11 +472,9 @@ namespace DatabaseInfrastructure
 
         // Foreign keys
         public int AccountId { get; set; }
-        public int CurrencyId { get; set; }
 
 
         public virtual Account Account { get; set; }
-        public virtual Currency Currency { get; set; }
     }
 
     /// <summary>
