@@ -28,10 +28,12 @@ namespace BusinessLogicLayer
                     if (context.Banks.Any())
                         return;   // DB has been seeded
 
-                    SeedUserCountryAndAddress(context);
+                    var userAndResult = SeedUserCountryAndAddress(context);
+                    if (!userAndResult.Item2)
+                        return;
 
                     // Parse Account.json and seed initial data 
-                    SeedDataFromApplicationJson(context);
+                    SeedDataFromApplicationJson(context, userAndResult.Item1);
 
                     // Commit to db
                     context.SaveChanges();
@@ -43,10 +45,12 @@ namespace BusinessLogicLayer
             }
         }
 
-        private static void SeedUserCountryAndAddress(MockContext context)
+        private static Tuple<User, bool> SeedUserCountryAndAddress(MockContext context)
         {
+            var user = new User();
+
             if (context.Users.Any())
-                return;
+                return new Tuple<User, bool>(user, false);
 
             var country = new Country()
             {
@@ -61,7 +65,7 @@ namespace BusinessLogicLayer
                 Country = country
             };
 
-            context.Users.Add(new User
+            user = new User
             {
                 Address = address,
                 FistName = "John",
@@ -69,7 +73,11 @@ namespace BusinessLogicLayer
                 Email = "john@smith.com",
                 Password = CryptoHelper.GetStringSha256Hash("Test"),
                 UserName = "john@smith.com"
-            });
+            };
+
+            context.Users.Add(user);
+
+            return new Tuple<User, bool>(user, true);
         }
 
         private static DataSourceInput LoadJson()
@@ -84,15 +92,13 @@ namespace BusinessLogicLayer
             return dataSourceInput;
         }
 
-        private static void SeedDataFromApplicationJson(MockContext context)
+        private static void SeedDataFromApplicationJson(MockContext context, User user)
         {
-            // Read to account.json and parse it
-            var accountInput = LoadJson();
-
-            var user = context.Users.FirstOrDefault();
-
             if (user == null)
                 return;
+
+            // Read to account.json and parse it
+            var accountInput = LoadJson();
 
 
             var creditCards = new List<CreditCard>() 
@@ -111,7 +117,7 @@ namespace BusinessLogicLayer
             context.Banks.Add(new Bank()
             {
                 Name = accountInput.BankName,
-                Accounts = accountInput.Accounts.Select(x => x.ConvertToAccountDTO(user.Id)).ToList()
+                Accounts = accountInput.Accounts.Select(x => x.ConvertToAccountDTO(user)).ToList()
             });
         }
     }

@@ -8,8 +8,4 @@
     <ProjectReference Include="..\DatabaseInfrastructure\DatabaseInfrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
-
 </Project>

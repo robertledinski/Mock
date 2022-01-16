@@ -1,12 +1,11 @@
 using BusinessLogicLayer;
+using BusinessLogicLayer.Services;
 using DatabaseAbstractions;
 using DatabaseInfrastructure;
 using DatabaseInfrastructure.Abstractions;
 using DatabaseInfrastructure.ConcreteImplementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -30,13 +29,15 @@ namespace Mock
             services.AddControllersWithViews();
 
             services.AddDbContext<MockContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 
-            services.AddScoped<IBankService, BankService>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IRepository<Bank>, Repository<Bank>>();
+            services.AddScoped<IRepository<Account>, Repository<Account>>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IRepository<Transaction>, Repository<Transaction>>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

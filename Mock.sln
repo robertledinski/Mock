@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicLayer", "Busin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseAbstractions", "DatabaseAbstractions\DatabaseAbstractions.csproj", "{DB2DBC64-B4AE-406D-ACE0-E12A07C579F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{42D11134-957A-4A9A-882E-87D94C240C4B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{DB2DBC64-B4AE-406D-ACE0-E12A07C579F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB2DBC64-B4AE-406D-ACE0-E12A07C579F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB2DBC64-B4AE-406D-ACE0-E12A07C579F4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{42D11134-957A-4A9A-882E-87D94C240C4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{42D11134-957A-4A9A-882E-87D94C240C4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{42D11134-957A-4A9A-882E-87D94C240C4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{42D11134-957A-4A9A-882E-87D94C240C4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

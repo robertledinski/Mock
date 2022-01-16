@@ -1,26 +1,41 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BusinessLogicLayer;
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Mock.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AccountController : Controller
+    public class AccountController : ControllerBase
     {
-        // All must be async
-        // Initial table with all data
-        public IActionResult Index()
+        IAccountService _accountService;    
+        public AccountController (IAccountService accountService)
         {
-            return View();
+            _accountService = accountService;
         }
 
-        [Route("Summary")]
-        // Calculated response in table
-        public IActionResult ReportSummary(int UserId)
+        [HttpGet]
+        // UI React table presentation
+        public AccountSummary Get()
+            => _accountService.GetAccountSummary();
+
+
+        [Route("MockAPI")]
+        [HttpPost]
+        // Required MockAPI usually here we would have attribute which implements auth (SSO, Identity Server, etc.)
+        // It would be probably on controller. Usually backend with services important like this would have unit test
+        public IActionResult Mock(DataSourceInput model)
         {
-            return View();
+            // Model validation
+            if (model == null)
+                return BadRequest(AccountErrorCodes.InvalidModel); // Log error
+
+            // Data validation
+            if(model.Accounts == null || model.Accounts.Count == 0 || !model.Accounts.SelectMany(x => x.Transactions).Any())
+                return BadRequest(AccountErrorCodes.MissingData); // Log error
+
+            return Ok(_accountService.ProcessAccountSummary(model.Accounts));
         }
-
-
-
     }
 }

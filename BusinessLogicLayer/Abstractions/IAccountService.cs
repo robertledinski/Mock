@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace BusinessLogicLayer
 {
-    public interface IBankService
+    public interface IAccountService
     {
-        string Test();
+        AccountSummary GetAccountSummary();
+        AccountSummary ProcessAccountSummary(List<AccountViewModel> accounts);
     }
 }

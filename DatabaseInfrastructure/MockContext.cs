@@ -139,6 +139,8 @@ namespace DatabaseInfrastructure
                  .Required(x => x.ConversionValue)
                  .HasKey(x => x.Id);
 
+                cc.Property(x => x.ConversionValue).HasColumnType("money");
+
                 cc.HasOne(x => x.SourceCurrency)
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
@@ -153,11 +155,11 @@ namespace DatabaseInfrastructure
                 a.Required(x => x.AvailableBalance)
                  .Required(x => x.RedMinus)
                  .Required(x => x.AvailableMinus)
+                 .Required(x => x.CurrentBalance)
+                 .Required(x => x.DailyWithdrawalLimit)
                  .Required(x => x.BankId)
                  .Required(x => x.AccountNumber)
                  .Required(x => x.AccountId)
-                 .Required(x => x.CurrentBalance)
-                 .Required(x => x.DailyWithdrawalLimit)
                  .Required(x => x.Name)
                  .Required(x => x.Type)
                  .Required(x => x.SubType)
@@ -167,6 +169,12 @@ namespace DatabaseInfrastructure
                  .Required(x => x.CreditCardId)
                  .Required(x => x.BankId)
                  .HasKey(x => x.Id);
+
+                a.Property(x => x.AvailableBalance).HasColumnType("money");
+                a.Property(x => x.RedMinus).HasColumnType("money");
+                a.Property(x => x.AvailableMinus).HasColumnType("money");
+                a.Property(x => x.CurrentBalance).HasColumnType("money");
+                a.Property(x => x.DailyWithdrawalLimit).HasColumnType("money");
 
                 a.Property(x => x.SortCode);
 
@@ -185,6 +193,10 @@ namespace DatabaseInfrastructure
                 a.HasOne(x => x.Bank)
                 .WithMany(x => x.Accounts)
                 .HasForeignKey(x => x.BankId);
+
+                // TODO: Test
+                a.HasMany(x => x.Transactions)
+                .WithOne(x => x.Account);
             });
 
             mb.Entity<Party>(p => 
@@ -245,9 +257,9 @@ namespace DatabaseInfrastructure
                 t.Required(x => x.Status)
                 .Required(x => x.Amount)
                 .Required(x => x.CardType)
-               // .Required(x => x.CurrencyId)
                 .Required(x => x.Date).HasKey(x => x.Id);
 
+                t.Property(x => x.Amount).HasColumnType("money");
 
                 t.Property(x => x.Description).IsRequired().HasMaxLength(100);
 
@@ -256,12 +268,7 @@ namespace DatabaseInfrastructure
                 t.HasOne(x => x.Account)
                 .WithMany(x => x.Transactions)
                 .HasForeignKey(x => x.AccountId);
-
-             /*   t.HasOne(x => x.Currency)
-                .WithMany()
-                .OnDelete(DeleteBehavior.Restrict); */
             });
-
         }
         #endregion
 
@@ -363,7 +370,7 @@ namespace DatabaseInfrastructure
         public virtual Bank Bank { get; set; }
         public virtual User User { get; set; }
         public virtual CreditCard CreditCard { get; set; }
-        public virtual List<Transaction> Transactions { get; set; }
+        public virtual List<Transaction> Transactions { get; set; } = new List<Transaction>();
     }
 
     /// <summary>
@@ -429,6 +436,7 @@ namespace DatabaseInfrastructure
     /// </summary>
     public enum CreditCardType : short
     {
+        None = 0,
         Debit = 1,
         Credit = 2,
         DeferredPayment = 3,
@@ -470,7 +478,6 @@ namespace DatabaseInfrastructure
         public DateTime Date { get; set; }
         public Status Status { get; set; }
 
-        // Foreign keys
         public int AccountId { get; set; }
 
 

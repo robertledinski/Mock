@@ -4,38 +4,45 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace BusinessLogicLayer
 {
     public class DataSourceInput
     {
+        [JsonPropertyName("brandName")]
         [JsonProperty("brandName")]
         public string BankName { get; set; }
-        [JsonProperty("accounts")]
+        [JsonPropertyName("accounts")]
         public List<AccountViewModel> Accounts { get; set; }
     }
 
     public class AccountViewModel
     {
+        [JsonPropertyName("accountId")]
         [JsonProperty("accountId")]
         public string Id { get; set; }
+        [JsonPropertyName("displayName")]
         [JsonProperty("displayName")]
-        public string Name { get; set; }    
+        public string Name { get; set; }
+        [JsonPropertyName("currencyCode")]
         [JsonProperty("currencyCode")]
         public string Currency { get; set; }
         public string AccountType { get; set; } // Parse to enum
         public string AccountSubType { get; set; } // Parse to enum
+        [JsonPropertyName("identifiers")]
         [JsonProperty("identifiers")]
         public IdentifierViewModel Identifier { get; set; }
         public List<object> Parties { get; set; }
         public List<object> StandingOrders { get; set; }
         public List<object> DirectDebits { get; set; }
+        [JsonPropertyName("balances")]
         [JsonProperty("balances")]
         public BalanceViewModel Balance { get; set; }
         public List<TransactionViewModel> Transactions { get; set; }
 
-        public Account ConvertToAccountDTO(int UserId)
+        public Account ConvertToAccountDTO(User user)
            => new Account
            {
                AccountId = Id,
@@ -54,7 +61,7 @@ namespace BusinessLogicLayer
                    TypeId = Balance.Current.CreditCardType.ParseEnum<CreditCardType>() // Matching inital cc
                },
                Transactions = Transactions.Select(x => x.ConvertToTransactionDTO()).ToList(),
-               UserId = UserId
+               User = user
            };
 
 
@@ -62,15 +69,22 @@ namespace BusinessLogicLayer
 
     public class TransactionViewModel
     {
+        [JsonPropertyName("description")]
         public string Description { get; set; }
+        [JsonPropertyName("amount")]
         public decimal Amount { get; set; }
+        [JsonPropertyName("creditDebitIndicator")]
         [JsonProperty("creditDebitIndicator")]
         public string CreditCardType { get; set; } // Convert to enum
         public string Status { get; set; } // Convert to enum
-        [JsonProperty("bookingDate")]
-        public DateTime Date { get; set; }
-        [JsonProperty("merchantDetails")]
+        [JsonPropertyName("bookingDate")]
+        public string BookingDate { get; set; }
+        public DateTime Date => BookingDate.ToUTCDateTime();
+        [JsonPropertyName("merchantDetails")]
         public string Details { get; set; }
+
+        public CreditCardType CreditCardTypeEnum => CreditCardType.ParseEnum<CreditCardType>();
+    
 
         public Transaction ConvertToTransactionDTO()
         {
@@ -95,17 +109,21 @@ namespace BusinessLogicLayer
     public class BalanceCreditViewModel
     {
         public decimal Amount { get; set; }
+        [JsonPropertyName("creditDebitIndicator")]
         [JsonProperty("creditDebitIndicator")]
         public string CreditCardType { get; set; } // Convert to enum
-        [JsonProperty("creditLines")]
+        [JsonPropertyName("creditLines")]
         public string Lines { get; set; }
     }
 
 
     public class IdentifierViewModel
     {
+        [JsonPropertyName("sortCode")]
         public string SortCode { get; set; }
+        [JsonPropertyName("accountNumber")]
         public string AccountNumber { get; set; }
+        [JsonPropertyName("secondaryIdentification")]
         public string SecondaryIdentification { get; set; }
     }
 }

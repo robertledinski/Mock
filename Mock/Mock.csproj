@@ -23,6 +23,7 @@
   <ItemGroup>
     <None Remove=".gitignore" />
     <None Remove="ClientApp\src\components\AccountDetails.tsx" />
+    <None Remove="ClientApp\src\store\AccountReducer.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +32,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\components\AccountDetails.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\store\AccountReducer.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
